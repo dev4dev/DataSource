@@ -25,6 +25,8 @@
 		63B408311D2A70E100C0D740 /* PersonViewModelFancy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B408301D2A70E100C0D740 /* PersonViewModelFancy.m */; };
 		63B408351D2A71B100C0D740 /* PersonFancyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B408331D2A71B100C0D740 /* PersonFancyTableViewCell.m */; };
 		63B408361D2A71B100C0D740 /* PersonFancyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B408341D2A71B100C0D740 /* PersonFancyTableViewCell.xib */; };
+		63B408391D2A882400C0D740 /* SectionedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B408381D2A882400C0D740 /* SectionedDataSource.m */; };
+		63B4083C1D2A8C9D00C0D740 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B4083B1D2A8C9D00C0D740 /* DataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,13 @@
 		63B408321D2A71B100C0D740 /* PersonFancyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonFancyTableViewCell.h; sourceTree = "<group>"; };
 		63B408331D2A71B100C0D740 /* PersonFancyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonFancyTableViewCell.m; sourceTree = "<group>"; };
 		63B408341D2A71B100C0D740 /* PersonFancyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonFancyTableViewCell.xib; sourceTree = "<group>"; };
+		63B408371D2A882400C0D740 /* SectionedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionedDataSource.h; sourceTree = "<group>"; };
+		63B408381D2A882400C0D740 /* SectionedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionedDataSource.m; sourceTree = "<group>"; };
+		63B4083A1D2A8C9D00C0D740 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
+		63B4083B1D2A8C9D00C0D740 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
+		63B4083D1D2A8D5B00C0D740 /* DataSourceSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourceSection.h; sourceTree = "<group>"; };
+		63B4083E1D2A90AF00C0D740 /* DataSourceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourceProtocol.h; sourceTree = "<group>"; };
+		63B4083F1D2A92B400C0D740 /* DataSource+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource+Protected.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +129,14 @@
 		63B408101D2A67E500C0D740 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				63B408401D2A930000C0D740 /* Protocols */,
+				63B4083A1D2A8C9D00C0D740 /* DataSource.h */,
+				63B4083F1D2A92B400C0D740 /* DataSource+Protected.h */,
+				63B4083B1D2A8C9D00C0D740 /* DataSource.m */,
 				63B4080D1D2A67C900C0D740 /* ArrayDataSource.h */,
 				63B4080E1D2A67C900C0D740 /* ArrayDataSource.m */,
-				63B408111D2A68A000C0D740 /* DataSourceCellConfigurable.h */,
+				63B408371D2A882400C0D740 /* SectionedDataSource.h */,
+				63B408381D2A882400C0D740 /* SectionedDataSource.m */,
 			);
 			name = DataSource;
 			sourceTree = "<group>";
@@ -159,6 +173,16 @@
 				63B408341D2A71B100C0D740 /* PersonFancyTableViewCell.xib */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		63B408401D2A930000C0D740 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				63B4083E1D2A90AF00C0D740 /* DataSourceProtocol.h */,
+				63B4083D1D2A8D5B00C0D740 /* DataSourceSection.h */,
+				63B408111D2A68A000C0D740 /* DataSourceCellConfigurable.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +260,7 @@
 				63B407FE1D2A67B900C0D740 /* ViewController.m in Sources */,
 				63B407FB1D2A67B900C0D740 /* AppDelegate.m in Sources */,
 				63B408221D2A6B8C00C0D740 /* CompanyTableViewCell.m in Sources */,
+				63B408391D2A882400C0D740 /* SectionedDataSource.m in Sources */,
 				63B408281D2A6BC300C0D740 /* Company+DataSource.m in Sources */,
 				63B4081B1D2A690F00C0D740 /* PersonTableViewCell.m in Sources */,
 				63B408161D2A68D500C0D740 /* Person.m in Sources */,
@@ -243,6 +268,7 @@
 				63B4082B1D2A6D1100C0D740 /* Item.m in Sources */,
 				63B4080F1D2A67C900C0D740 /* ArrayDataSource.m in Sources */,
 				63B408351D2A71B100C0D740 /* PersonFancyTableViewCell.m in Sources */,
+				63B4083C1D2A8C9D00C0D740 /* DataSource.m in Sources */,
 				63B408311D2A70E100C0D740 /* PersonViewModelFancy.m in Sources */,
 				63B408251D2A6BB200C0D740 /* Company.m in Sources */,
 				63B407F81D2A67B900C0D740 /* main.m in Sources */,

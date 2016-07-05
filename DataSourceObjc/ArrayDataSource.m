@@ -7,15 +7,18 @@
 //
 
 #import "ArrayDataSource.h"
+#import "DataSource+Protected.h"
 
-@interface ArrayDataSource () <UITableViewDataSource>
+@interface ArrayDataSource ()
 
-@property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray<id<DataSourceCellConfigurable>> *data;
 
 @end
 
 @implementation ArrayDataSource
+
+@synthesize parentDataSource = _parentDataSource;
+@synthesize tableView = _tableView;
 
 - (instancetype)init
 {
@@ -26,26 +29,55 @@
 	return self;
 }
 
-#pragma mark - Public
-
-- (void)connectTableView:(UITableView *)tableView
+- (UITableView *)tableView
 {
-	tableView.dataSource = self;
-	self.tableView = tableView;
+	if (self.parentDataSource) {
+		return self.parentDataSource.tableView;
+	}
+
+	return _tableView;
 }
 
-- (void)registerDataClass:(Class)dataClass
+- (NSUInteger)activeSectionIndex
 {
-	if ([dataClass conformsToProtocol:@protocol(DataSourceCellConfigurable)]) {
-		[dataClass setupTableView:self.tableView];
+	if (self.parentDataSource) {
+		return [self.parentDataSource indexOfSection:self];
 	} else {
-		NSAssert(NO, @"[DataSource Error]: Trying to register data class which doesn't conform to DataSourceCellConfigurable protocol");
+		return 0;
 	}
 }
 
+- (NSArray *)objects
+{
+	return [self.data copy];
+}
+
+#pragma mark - Public
+
 - (void)addData:(id<DataSourceCellConfigurable>)object
 {
+	[self.tableView beginUpdates];
 	[self.data addObject:object];
+	[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.data.count - 1 inSection:[self activeSectionIndex]]] withRowAnimation:self.animation];
+	[self.tableView endUpdates];
+}
+
+- (void)insertData:(id<DataSourceCellConfigurable>)object atIndex:(NSUInteger)index
+{
+	if (index < self.data.count) {
+		[self.tableView beginUpdates];
+		[self.data insertObject:object atIndex:index];
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:[self activeSectionIndex]]] withRowAnimation:self.animation];
+		[self.tableView endUpdates];
+	} else {
+		[self addData:object];
+	}
+}
+
+- (void)setData:(NSArray<id<DataSourceCellConfigurable>> *)objects
+{
+	[self.data removeAllObjects];
+	[self.data addObjectsFromArray:objects];
 	[self.tableView reloadData];
 }
 
@@ -58,14 +90,31 @@
 - (void)deleteObjectAtIndex:(NSUInteger)index
 {
 	if (index < self.data.count) {
+		[self.tableView beginUpdates];
 		[self.data removeObjectAtIndex:index];
+		NSLog(@"%lu",  (unsigned long)[self activeSectionIndex]);
+		[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:[self activeSectionIndex]]] withRowAnimation:self.animation];
+		[self.tableView endUpdates];
 	}
-	[self.tableView reloadData];
+}
+
+- (id<DataSourceCellConfigurable>)objectAtIndex:(NSUInteger)index
+{
+	if (index < self.data.count) {
+		return self.data[index];
+	}
+
+	return nil;
 }
 
 #pragma mark - DataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return self.data.count;
+}
+
+- (NSInteger)numberOfRowsInSection
 {
 	return self.data.count;
 }
@@ -76,6 +125,13 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[[object class] cellIdentifier] forIndexPath:indexPath];
 	[object setupCell:cell];
 	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		[self deleteObjectAtIndex:indexPath.row];
+	}
 }
 
 @end

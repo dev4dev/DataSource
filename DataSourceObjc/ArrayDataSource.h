@@ -7,15 +7,17 @@
 //
 
 @import UIKit;
+#import "DataSource.h"
 #import "DataSourceCellConfigurable.h"
+#import "DataSourceSection.h"
 
-@interface ArrayDataSource : NSObject
+@interface ArrayDataSource : DataSource <DataSourceSection>
 
-- (void)connectTableView:(UITableView *)tableView;
-- (void)registerDataClass:(Class)dataClass;
+@property (nonatomic, strong, readonly) NSArray *objects;
+@property (nonatomic, weak) id<DataSourceProtocol> parentDataSource;
 
-- (void)addData:(id<DataSourceCellConfigurable>)object;
-- (void)deleteObject:(id<DataSourceCellConfigurable>)object;
-- (void)deleteObjectAtIndex:(NSUInteger)index;
+#pragma mark - DataSource Section
+@property (nonatomic, copy) NSString *sectionHeaderTitle;
+@property (nonatomic, copy) NSString *sectionFooterTitle;
 
 @end
